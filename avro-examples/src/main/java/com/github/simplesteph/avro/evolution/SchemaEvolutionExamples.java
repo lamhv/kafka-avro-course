@@ -2,6 +2,7 @@ package com.github.simplesteph.avro.evolution;
 
 import com.example.CustomerV1;
 import com.example.CustomerV2;
+import com.example.CustomerV3;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.io.DatumReader;
@@ -44,6 +45,17 @@ public class SchemaEvolutionExamples {
         while (dataFileReaderV2.hasNext()) {
             CustomerV2 customerV2read = dataFileReaderV2.next();
             System.out.println("Customer V2 = " + customerV2read.toString());
+        }
+
+        // we read it using the v3 schema
+        // delete field without default value
+        System.out.println("Reading our customerV1.avro with v3 schema");
+        final File file1 = new File("customerv1.avro");
+        final DatumReader<CustomerV3> datumReaderV3 = new SpecificDatumReader<>(CustomerV3.class);
+        final DataFileReader<CustomerV3> dataFileReaderV3 = new DataFileReader<>(file1, datumReaderV3);
+        while (dataFileReaderV3.hasNext()) {
+            CustomerV3 customerV3read = dataFileReaderV3.next();
+            System.out.println("Customer V3 = " + customerV3read.toString());
         }
 
         System.out.println("Backward schema evolution successful\n\n\n");
